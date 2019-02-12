@@ -15,15 +15,15 @@ class Game(arcade.Window):
         arcade.set_background_color(arcade.color.BLACK )
         
         
-    def movement(momentum_X, momentum_Y):
+    def movement(self,momentum_X, momentum_Y):
         pass
     
-    def momentum(Keypress):
-        pass
+    def momentum(self,Keypress):
+        pass   
 
-    def player(player_x, player_y):
+    def player(self,player_x, player_y):
         pass
-
+    
     def on_draw(self):
         arcade.start_render()
 
@@ -33,6 +33,15 @@ class Game(arcade.Window):
 def main():
     arcade.start_render()    
     Game()
+
+    
+
+
+
+
+
+
+
     arcade.finish_render()
     arcade.run()
 
