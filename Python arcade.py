@@ -6,7 +6,6 @@ SCREEN_TITLE = "Starting Template"
 
 
 class Game(arcade.Window):
-    def __init__(self):
     """
    The game class
     """
