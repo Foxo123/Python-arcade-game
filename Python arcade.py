@@ -21,10 +21,12 @@ class Game(arcade.Window):
     def setup(self):
         # Create your sprites and sprite lists here
         rondje1 = None
+        kogel1 = None
 
 
     def rondje(self, x,y,radius,color):
         arcade.draw_circle_filled(x,y,radius,color)
+
 
     pos_x = 420
     pos_y = 100
@@ -32,16 +34,21 @@ class Game(arcade.Window):
     momentum_x = 0
     momentum_y = 0
 
+    kogel_pos_x = pos_x
+    kogel_pos_y = pos_y
+    bool_kogel = False
+
+
     def on_draw(self):
         """
         Rendering function
         """
-
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()
         self.rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
-        #self.niggatoilet = arcade.
+        if self.bool_kogel == True:
+            self.kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.RED)
 
         # Call draw() on all your sprite lists below
 
@@ -55,11 +62,32 @@ class Game(arcade.Window):
             self.pos_y += 5
         if self.momentum_y == -1:
             self.pos_y += -5
-        ##self.pos_x += 5
+        if self.momentum_x == 1:
+            self.pos_x += -5
+        if self.momentum_x == -1:
+            self.pos_x += 5
+       
+       
         if self.pos_x > SCREEN_WIDTH:
             self.pos_x = 0
         if self.pos_x < -10:
             self.pos_x = 799
+        if self.pos_y > SCREEN_HEIGHT:
+            self.pos_y = 0
+        if self.pos_y < -10:
+            self.pos_y = 0
+
+        if self.bool_kogel == True:
+            self.kogel_pos_x = self.pos_x
+            self.kogel_pos_y += 10
+        if self.kogel_pos_y > SCREEN_HEIGHT:
+            self.bool_kogel = False
+        if self.kogel_pos_x > SCREEN_WIDTH:
+            self.bool_kogel = False
+            
+        
+        
+
         
         
 
@@ -72,6 +100,8 @@ class Game(arcade.Window):
             self.momentum_x = 1
         if key == 100:
             self.momentum_x = -1
+        if key == 32:
+            self.bool_kogel = True
 
             
 
@@ -84,24 +114,6 @@ class Game(arcade.Window):
             self.momentum_x = 0
         if key == 100:
             self.momentum_x = 0
-
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
-        """
-        Called whenever the mouse moves.
-        """
-        pass
-
-    def on_mouse_press(self, x, y, button, key_modifiers):
-        """
-        Called when the user presses a mouse button.
-        """
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-        """
-        Called when a user releases a mouse button.
-        """
-        pass
 
 
 def main():
