@@ -17,6 +17,15 @@ class Game(arcade.Window):
 
         # If you have sprite lists, you should create them here,
         # and set them to None
+  
+    pos_x = 420
+    pos_y = 100
+    momentum_x = 0
+    momentum_y = 0
+    kogel_pos_x = None
+    kogel_pos_y = None
+    bool_kogel = False
+    kogel_update_x = True
 
     def setup(self):
         # Create your sprites and sprite lists here
@@ -27,18 +36,6 @@ class Game(arcade.Window):
     def rondje(self, x,y,radius,color):
         arcade.draw_circle_filled(x,y,radius,color)
 
-
-    pos_x = 420
-    pos_y = 100
-
-    momentum_x = 0
-    momentum_y = 0
-
-    kogel_pos_x = pos_x
-    kogel_pos_y = pos_y
-    bool_kogel = False
-
-
     def on_draw(self):
         """
         Rendering function
@@ -46,9 +43,9 @@ class Game(arcade.Window):
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()
-        self.rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
+        rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
         if self.bool_kogel == True:
-            self.kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.RED)
+            kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.RED)
 
         # Call draw() on all your sprite lists below
 
@@ -78,7 +75,9 @@ class Game(arcade.Window):
             self.pos_y = 0
 
         if self.bool_kogel == True:
-            self.kogel_pos_x = self.pos_x
+           if self.kogel_update_x:
+               self.kogel_pos_x = pos_x
+               self.kogel_update_x = False
             self.kogel_pos_y += 10
         if self.kogel_pos_y > SCREEN_HEIGHT:
             self.bool_kogel = False
@@ -102,6 +101,7 @@ class Game(arcade.Window):
             self.momentum_x = -1
         if key == 32:
             self.bool_kogel = True
+            self.kogel_update_x = True
 
             
 
@@ -114,6 +114,7 @@ class Game(arcade.Window):
             self.momentum_x = 0
         if key == 100:
             self.momentum_x = 0
+ 
 
 
 def main():
