@@ -22,8 +22,8 @@ class Game(arcade.Window):
     pos_y = 100
     momentum_x = 0
     momentum_y = 0
-    kogel_pos_x = None
-    kogel_pos_y = None
+    kogel_pos_x = 99
+    kogel_pos_y = pos_y
     bool_kogel = False
     kogel_update_x = True
 
@@ -32,6 +32,10 @@ class Game(arcade.Window):
         rondje1 = None
         kogel1 = None
 
+    def resetkogel(self):
+        self.kogel_pos_y = self.pos_y
+        self.bool_kogel = False
+        self.kogel_update_x = True
 
     def rondje(self, x,y,radius,color):
         arcade.draw_circle_filled(x,y,radius,color)
@@ -75,14 +79,11 @@ class Game(arcade.Window):
             self.pos_y = 0
 
         if self.bool_kogel == True:
-           if self.kogel_update_x:
-               self.kogel_pos_x = pos_x
-               self.kogel_update_x = False
-            self.kogel_pos_y += 10
+          self.kogel_pos_y += 10
         if self.kogel_pos_y > SCREEN_HEIGHT:
-            self.bool_kogel = False
+            self.resetkogel()
         if self.kogel_pos_x > SCREEN_WIDTH:
-            self.bool_kogel = False
+            self.resetkogel()
             
         
         
@@ -101,7 +102,9 @@ class Game(arcade.Window):
             self.momentum_x = -1
         if key == 32:
             self.bool_kogel = True
-            self.kogel_update_x = True
+            if self.kogel_update_x == True:
+                self.kogel_pos_x = self.pos_x
+                self.kogel_update_x = False
 
             
 
