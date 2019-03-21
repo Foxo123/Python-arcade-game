@@ -3,7 +3,9 @@ import arcade
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "NEGERS ETEN POEP OMDAT ZE DAT LEKKER VINDEN alpha0.001"
-
+MOVEMENT_SPEED = 5
+BULLET_SPEED = 10
+BULLET_DAMAGE = 20
 
 class Game(arcade.Window):
     """
@@ -26,11 +28,16 @@ class Game(arcade.Window):
     kogel_pos_y = pos_y
     bool_kogel = False
     kogel_update_x = True
+    enemy_x = 400
+    enemy_y = 550
+    enemy_hp = 100
+
 
     def setup(self):
         # Create your sprites and sprite lists here
         rondje1 = None
         kogel1 = None
+        Enemy = None
 
     def resetkogel(self):
         self.kogel_pos_y = self.pos_y
@@ -49,8 +56,12 @@ class Game(arcade.Window):
         arcade.start_render()
         rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
         if self.bool_kogel == True:
-            kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.RED)
-
+            kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.BLUE)
+        if self.enemy_hp > 0:
+            Enemy = self.rondje(self.enemy_x,self.enemy_y,30,arcade.color.RED)
+        arcade.draw_text(f"ENEMY HP: {self.enemy_hp}",600, 50,arcade.color.WHITE)
+        if self.enemy_hp == 0:
+            arcade.draw_text("YOU WON", 400 , 300, arcade.color.WHITE,20)
         # Call draw() on all your sprite lists below
 
     def update(self, delta_time):
@@ -59,14 +70,15 @@ class Game(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
+
         if self.momentum_y == 1:
-            self.pos_y += 5
+            self.pos_y += MOVEMENT_SPEED
         if self.momentum_y == -1:
-            self.pos_y += -5
+            self.pos_y -= MOVEMENT_SPEED
         if self.momentum_x == 1:
-            self.pos_x += -5
+            self.pos_x -= MOVEMENT_SPEED
         if self.momentum_x == -1:
-            self.pos_x += 5
+            self.pos_x += MOVEMENT_SPEED
        
        
         if self.pos_x > SCREEN_WIDTH:
@@ -79,17 +91,19 @@ class Game(arcade.Window):
             self.pos_y = 0
 
         if self.bool_kogel == True:
-          self.kogel_pos_y += 10
+          self.kogel_pos_y += BULLET_SPEED
         if self.kogel_pos_y > SCREEN_HEIGHT:
             self.resetkogel()
         if self.kogel_pos_x > SCREEN_WIDTH:
             self.resetkogel()
-            
         
-        
-
-        
-        
+        if self.enemy_hp > 0:
+           self.enemy_x += MOVEMENT_SPEED
+        if self.enemy_x > SCREEN_WIDTH:
+            self.enemy_x = -50
+        if self.kogel_pos_x < self.enemy_x + 30 and self.kogel_pos_x > self.enemy_x - 30 and self.kogel_pos_y < self.enemy_y + 30 and self.kogel_pos_y > self.enemy_y - 30:
+            self.enemy_hp -= BULLET_DAMAGE
+            self.resetkogel()
 
     def on_key_press(self, key, key_modifiers):
         if key == 119:
@@ -106,8 +120,6 @@ class Game(arcade.Window):
                 self.kogel_pos_x = self.pos_x
                 self.kogel_update_x = False
 
-            
-
     def on_key_release(self, key, key_modifiers):
         if key == 119:
             self.momentum_y = 0
@@ -118,8 +130,6 @@ class Game(arcade.Window):
         if key == 100:
             self.momentum_x = 0
  
-
-
 def main():
     """ Main method """
     game = Game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
