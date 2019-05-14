@@ -76,9 +76,9 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
 
         # Set up the player
-        self.player_sprite = Player("images/Ships/spaceShips_001.png", SPRITE_SCALING)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
+        self.player_sprite = Player("images/Ships/spaceShips_007.png", SPRITE_SCALING)
+        self.player_sprite.center_x = 40
+        self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)
 
     def on_draw(self):
