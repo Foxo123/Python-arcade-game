@@ -19,7 +19,7 @@ class Game(arcade.Window):
 
         # If you have sprite lists, you should create them here,
         # and set them to None
-  
+    game_start = False
     pos_x = 420
     pos_y = 100
     momentum_x = 0
@@ -54,14 +54,18 @@ class Game(arcade.Window):
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()
-        rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
-        if self.bool_kogel == True:
-            kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.BLUE)
-        if self.enemy_hp > 0:
-            Enemy = self.rondje(self.enemy_x,self.enemy_y,30,arcade.color.RED)
-        arcade.draw_text(f"ENEMY HP: {self.enemy_hp}",600, 50,arcade.color.WHITE)
-        if self.enemy_hp == 0:
-            arcade.draw_text("YOU WON", 400 , 300, arcade.color.WHITE,20)
+        if self.game_start == False:
+            arcade.draw_text("PRESS ENTER TO START", 300, 400, arcade.color.WHITE,20)
+            arcade.draw_text("made by Robin goubitz and Tom Lengkeek",300,375,arcade.color.WHITE,10)
+        else:
+            rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
+            if self.bool_kogel == True:
+              kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.BLUE)
+            if self.enemy_hp > 0:
+               Enemy = self.rondje(self.enemy_x,self.enemy_y,30,arcade.color.RED)
+               arcade.draw_text(f"ENEMY HP: {self.enemy_hp}",600, 50,arcade.color.WHITE)
+            if self.enemy_hp == 0:
+              arcade.draw_text("YOU WON", 400 , 300, arcade.color.WHITE,20)
         # Call draw() on all your sprite lists below
 
     def update(self, delta_time):
@@ -106,6 +110,10 @@ class Game(arcade.Window):
             self.resetkogel()
 
     def on_key_press(self, key, key_modifiers):
+        if self.game_start == False: 
+            if key == 65293:
+                self.game_start = True
+
         if key == 119:
             self.momentum_y = 1
         if key == 115:
