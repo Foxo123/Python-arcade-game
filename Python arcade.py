@@ -1,5 +1,5 @@
 import arcade
-
+import os
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "arcade alpha0.001"
@@ -9,16 +9,33 @@ BULLET_DAMAGE = 20
 
 class Game(arcade.Window):
     """
-   The game class
+    Main application class.
     """
 
     def __init__(self, width, height, title):
+        """
+        Initializer
+        """
+
+        # Call the parent class initializer
         super().__init__(width, height, title)
 
-        arcade.set_background_color(arcade.color.BLACK)
+        # Set the working directory (where we expect to find files) to the same
+        # directory this .py file is in. You can leave this out of your own
+        # code, but it is needed to easily run the examples using "python -m"
+        # as mentioned at the top of this program.
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
+        
+        # Variables that will hold sprite lists
+        self.player_list = None
 
-        # If you have sprite lists, you should create them here,
-        # and set them to None
+        # Set up the player info
+        self.player_sprite = None
+
+        # Set the background color
+        arcade.set_background_color(arcade.color.AMAZON)
+    
     game_start = False
     pos_x = 420
     pos_y = 100
@@ -43,65 +60,18 @@ class Game(arcade.Window):
         self.kogel_pos_y = self.pos_y
         self.bool_kogel = False
         self.kogel_update_x = True
-
-class MyGame(arcade.Window):
-    """
-    Main application class.
-    """
-
-    def __init__(self, width, height, title):
-        """
-        Initializer
-        """
-
-        # Call the parent class initializer
-        super().__init__(width, height, title)
-
-        # Set the working directory (where we expect to find files) to the same
-        # directory this .py file is in. You can leave this out of your own
-        # code, but it is needed to easily run the examples using "python -m"
-        # as mentioned at the top of this program.
-        file_path = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(file_path)
-
-        # Variables that will hold sprite lists
-        self.player_list = None
-
-        # Set up the player info
-        self.player_sprite = None
-
-        # Set the background color
-        arcade.set_background_color(arcade.color.AMAZON)
-
     def setup(self):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
 
-        # Set up the player
+        """  # Set up the player
         self.player_sprite = Player("images/Ships/spaceShips_007.png", SPRITE_SCALING)
         self.player_sprite.center_x = 40
         self.player_sprite.center_y = 40
-        self.player_list.append(self.player_sprite)
+        self.player_list.append(self.player_sprite)"""
 
-    def on_draw(self):
-        """
-        Render the screen.
-        """
-
-        # This command has to happen before we start drawing
-        arcade.start_render()
-
-        # Draw all the sprites.
-        self.player_list.draw()
-
-    def update(self, delta_time):
-        """ Movement and game logic """
-
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        self.player_list.update()
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -122,17 +92,6 @@ class MyGame(arcade.Window):
             self.player_sprite.change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
-
-
-def main():
-    """ Main method """
-    window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    window.setup()
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
     
     def rondje(self, x,y,radius,color):
         arcade.draw_circle_filled(x,y,radius,color)
@@ -144,16 +103,6 @@ if __name__ == "__main__":
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()
-<<<<<<< HEAD
-        hero = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
-        if self.bool_kogel == True:
-            kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.BLUE)
-        if self.enemy_hp > 0:
-            Enemy = self.rondje(self.enemy_x,self.enemy_y,30,arcade.color.RED)
-        arcade.draw_text(f"ENEMY HP: {self.enemy_hp}",600, 50,arcade.color.WHITE)
-        if self.enemy_hp == 0:
-            arcade.draw_text("YOU WON", 400 , 300, arcade.color.WHITE,20)
-=======
         if self.game_start == False:
             arcade.draw_text("PRESS ENTER TO START", 300, 400, arcade.color.WHITE,20)
             arcade.draw_text("made by Robin goubitz and Tom Lengkeek",300,375,arcade.color.WHITE,10)
@@ -166,7 +115,6 @@ if __name__ == "__main__":
                arcade.draw_text(f"ENEMY HP: {self.enemy_hp}",600, 50,arcade.color.WHITE)
             if self.enemy_hp == 0:
               arcade.draw_text("YOU WON", 400 , 300, arcade.color.WHITE,20)
->>>>>>> ec2cd904fbd3aba73e730b77be1dff254617b62f
         # Call draw() on all your sprite lists below
 
     def update(self, delta_time):
