@@ -18,7 +18,7 @@ class Game(arcade.Window):
         """
 
         # Call the parent class initializer
-        super().__init__(width, height, title)
+        super().__init__(width, height, title)  
 
         # Set the working directory (where we expect to find files) to the same
         # directory this .py file is in. You can leave this out of your own
@@ -49,13 +49,6 @@ class Game(arcade.Window):
     enemy_y = 550
     enemy_hp = 100
 
-
-    def setup(self):
-        # Create your sprites and sprite lists here
-        hero = None
-        kogel1 = None
-        Enemy = None
-
     def resetkogel(self):
         self.kogel_pos_y = self.pos_y
         self.bool_kogel = False
@@ -65,12 +58,15 @@ class Game(arcade.Window):
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
-
+        hero = None
+        kogel1 = None
+        Enemy = None
         """  # Set up the player
         self.player_sprite = Player("images/Ships/spaceShips_007.png", SPRITE_SCALING)
         self.player_sprite.center_x = 40
         self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)"""
+        
 
 
     def on_key_press(self, key, modifiers):
@@ -187,6 +183,11 @@ class Game(arcade.Window):
         if key == 100:
             self.momentum_x = 0
  
+
+class Player():
+    
+
+
 def main():
     """ Main method """
     game = Game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
