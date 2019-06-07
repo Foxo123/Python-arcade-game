@@ -7,6 +7,37 @@ MOVEMENT_SPEED = 5
 BULLET_SPEED = 10
 BULLET_DAMAGE = 20
 
+
+
+
+class player():
+    pos_x = 420
+    pos_y = 100
+    momentum_x = 0
+    momentum_y = 0
+
+    def update():
+        if player.momentum_y == 1:
+            pos_y += MOVEMENT_SPEED
+        if player.momentum_y == -1:
+            pos_y -= MOVEMENT_SPEED
+        if player.momentum_x == 1:
+            pos_x -= MOVEMENT_SPEED
+        if player.momentum_x == -1:
+            pos_x += MOVEMENT_SPEED
+        
+
+        if pos_x > SCREEN_WIDTH:
+            pos_x = 0
+        if pos_x < -10:
+            pos_x = 799
+        if pos_y > SCREEN_HEIGHT:
+            pos_y = 0
+        if pos_y < -10:
+            pos_y = 0
+
+    
+
 class Game(arcade.Window):
     """
     Main application class.
@@ -37,12 +68,8 @@ class Game(arcade.Window):
         arcade.set_background_color(arcade.color.AMAZON)
     
     game_start = False
-    pos_x = 420
-    pos_y = 100
-    momentum_x = 0
-    momentum_y = 0
     kogel_pos_x = 99
-    kogel_pos_y = pos_y
+    kogel_pos_y = player.pos_y
     bool_kogel = False
     kogel_update_x = True
     enemy_x = 400
@@ -50,7 +77,7 @@ class Game(arcade.Window):
     enemy_hp = 100
 
     def resetkogel(self):
-        self.kogel_pos_y = self.pos_y
+        self.kogel_pos_y = player.pos_y
         self.bool_kogel = False
         self.kogel_update_x = True
     def setup(self):
@@ -67,27 +94,6 @@ class Game(arcade.Window):
         self.player_sprite.center_y = 40
         self.player_list.append(self.player_sprite)"""
         
-
-
-    def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed. """
-
-        if key == arcade.key.UP:
-            self.player_sprite.change_y = MOVEMENT_SPEED
-        elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -MOVEMENT_SPEED
-        elif key == arcade.key.LEFT:
-            self.player_sprite.change_x = -MOVEMENT_SPEED
-        elif key == arcade.key.RIGHT:
-            self.player_sprite.change_x = MOVEMENT_SPEED
-
-    def on_key_release(self, key, modifiers):
-        """Called when the user releases a key. """
-
-        if key == arcade.key.UP or key == arcade.key.DOWN:
-            self.player_sprite.change_y = 0
-        elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 0
     
     def rondje(self, x,y,radius,color):
         arcade.draw_circle_filled(x,y,radius,color)
@@ -103,7 +109,7 @@ class Game(arcade.Window):
             arcade.draw_text("PRESS ENTER TO START", 300, 400, arcade.color.WHITE,20)
             arcade.draw_text("made by Robin goubitz and Tom Lengkeek",300,375,arcade.color.WHITE,10)
         else:
-            rondje1 = self.rondje(self.pos_x,self.pos_y,30,arcade.color.WHITE)
+            rondje1 = self.rondje(player.pos_x,player.pos_y,30,arcade.color.WHITE)
             if self.bool_kogel == True:
               kogel1 = self.rondje(self.kogel_pos_x, self.kogel_pos_y, 10, arcade.color.BLUE)
             if self.enemy_hp > 0:
@@ -119,26 +125,6 @@ class Game(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-
-        if self.momentum_y == 1:
-            self.pos_y += MOVEMENT_SPEED
-        if self.momentum_y == -1:
-            self.pos_y -= MOVEMENT_SPEED
-        if self.momentum_x == 1:
-            self.pos_x -= MOVEMENT_SPEED
-        if self.momentum_x == -1:
-            self.pos_x += MOVEMENT_SPEED
-       
-       
-        if self.pos_x > SCREEN_WIDTH:
-            self.pos_x = 0
-        if self.pos_x < -10:
-            self.pos_x = 799
-        if self.pos_y > SCREEN_HEIGHT:
-            self.pos_y = 0
-        if self.pos_y < -10:
-            self.pos_y = 0
-
         if self.bool_kogel == True:
           self.kogel_pos_y += BULLET_SPEED
         if self.kogel_pos_y > SCREEN_HEIGHT:
@@ -160,32 +146,30 @@ class Game(arcade.Window):
                 self.game_start = True
 
         if key == 119:
-            self.momentum_y = 1
+            player.momentum_y = 1
         if key == 115:
-            self.momentum_y = -1
+            player.momentum_y = -1
         if key == 97:
-            self.momentum_x = 1
+            player.momentum_x = 1
         if key == 100:
-            self.momentum_x = -1
+            player.momentum_x = -1
         if key == 32:
             self.bool_kogel = True
             if self.kogel_update_x == True:
-                self.kogel_pos_x = self.pos_x
+                self.kogel_pos_x = player.pos_x
                 self.kogel_update_x = False
 
     def on_key_release(self, key, key_modifiers):
         if key == 119:
-            self.momentum_y = 0
+            player.momentum_y = 0
         if key == 115:
-            self.momentum_y = 0
+            player.momentum_y = 0
         if key == 97:
-            self.momentum_x = 0
+            player.momentum_x = 0
         if key == 100:
-            self.momentum_x = 0
- 
+            player.momentum_x = 0
 
-class Player():
-    
+ 
 
 
 def main():
@@ -193,7 +177,6 @@ def main():
     game = Game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     game.setup()
     arcade.run()
-
-
+   
 if __name__ == "__main__":
     main()
